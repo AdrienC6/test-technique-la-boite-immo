@@ -19,6 +19,7 @@ services:
             - "../src/api/DependencyInjection/"
             - "../src/api/Entity/"
             - "../src/api/Kernel.php"
+            - "../src/api/DTO"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
