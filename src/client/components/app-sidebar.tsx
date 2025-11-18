@@ -34,7 +34,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           {
             title: t('Exports'),
-            url: '#',
+            url: '/exports',
           },
         ],
       },

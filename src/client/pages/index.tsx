@@ -28,57 +28,34 @@ export function Index() {
     schema: HelloWorldResponseSchema,
   }, fetcher);
 
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{t('Accueil')}</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-
-        <div className="flex flex-col gap-4 p-4">
-          {match({
-            isLoading,
-            error,
-            data,
-          })
-            .with(
-              {
-                isLoading: true,
-                data: P.nullish,
-                error: P.nullish,
-              },
-              () => <div className="w-full bg-accent h-8 animate-pulse rounded-md"></div>,
-            )
-            .with(
-              { error: P.not(P.nullish) },
-              ({ error }) => error.message,
-            )
-            .with(
-              { data: P.not(P.nullish) },
-              ({ data }) => <p>{data.message}</p>,
-            )
-            .with(
-              {
-                isLoading: false,
-                data: P.nullish,
-                error: P.nullish,
-              },
-              () => <p>{t('Aucune donnée disponible')}</p>,
-            )
-            .exhaustive()}
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  );
+  return match({
+    isLoading,
+    error,
+    data,
+  })
+    .with(
+      {
+        isLoading: true,
+        data: P.nullish,
+        error: P.nullish,
+      },
+      () => <div className="w-full bg-accent h-8 animate-pulse rounded-md"></div>,
+    )
+    .with(
+      { error: P.not(P.nullish) },
+      ({ error }) => error.message,
+    )
+    .with(
+      { data: P.not(P.nullish) },
+      ({ data }) => <p>{data.message}</p>,
+    )
+    .with(
+      {
+        isLoading: false,
+        data: P.nullish,
+        error: P.nullish,
+      },
+      () => <p>{t('Aucune donnée disponible')}</p>,
+    )
+    .exhaustive()
 }
