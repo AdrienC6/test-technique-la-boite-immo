@@ -27,3 +27,8 @@ services:
         arguments:
             $env: "%env(APP_ENV)%"
             $manifest: "%kernel.project_dir%/public/assets/manifest.json"
+
+    App\Service\Exporter\ExporterRegistry:
+        calls:
+            - register: ['@App\Service\Exporter\SeLogerExporter']
+            - register: ['@App\Service\Exporter\LeBonCoinExporter']
