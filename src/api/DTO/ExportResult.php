@@ -11,5 +11,6 @@ class ExportResult
         public readonly ?string $externalId = null,
         public readonly ?array $response = null,
         public readonly ?string $errorMessage = null,
-    ) {}
+    ) {
+    }
 }

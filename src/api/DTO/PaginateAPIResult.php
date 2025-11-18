@@ -12,12 +12,11 @@ class PaginateAPIResult implements JsonSerializable
     public int $total;
 
     public function __construct(
-        array $data, 
-        int $page, 
-        int $limit, 
-        int $total
-        )
-    {
+        array $data,
+        int $page,
+        int $limit,
+        int $total,
+    ) {
         $this->data = $data;
         $this->page = $page;
         $this->limit = $limit;
@@ -32,8 +31,8 @@ class PaginateAPIResult implements JsonSerializable
                 'page' => $this->page,
                 'limit' => $this->limit,
                 'total' => $this->total,
-                'pages' => (int) ceil($this->total / $this->limit),
+                'pages' => (int)ceil($this->total / $this->limit),
             ],
-        ]; 
+        ];
     }
 }

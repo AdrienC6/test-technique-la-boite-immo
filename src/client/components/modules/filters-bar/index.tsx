@@ -9,7 +9,7 @@ interface Filter {
   name: string
   label: string
   value: string | number
-  onChange: (e: React.ChangeEvent<any>) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
   options?: Option[]
   type?: 'select' | 'input'
 }

@@ -16,6 +16,7 @@ class ExporterRegistry
         if (!isset($this->exporters[$gatewayCode])) {
             throw new \InvalidArgumentException("Exporter not found for gateway: $gatewayCode");
         }
+
         return $this->exporters[$gatewayCode];
     }
 

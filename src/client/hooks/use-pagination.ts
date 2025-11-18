@@ -1,12 +1,6 @@
 import { useState } from 'react';
 
-export interface PaginationState<TFilters = Record<string, any>> {
-  page: number
-  limit: number
-  filters: TFilters
-}
-
-export function usePagination<TFilters = Record<string, any>>(initialFilters: TFilters = {} as TFilters, initialPage = 1, initialLimit = 20) {
+export function usePagination<TFilters = Record<string, string | number>>(initialFilters: TFilters = {} as TFilters, initialPage = 1, initialLimit = 20) {
   const [page, setPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
   const [filters, setFilters] = useState<TFilters>(initialFilters);

@@ -9,6 +9,8 @@ interface ExporterInterface
 {
     /**
      * Export a property to the external platform
+     *
+     * @param Property $property
      */
     public function export(Property $property): ExportResult;
 

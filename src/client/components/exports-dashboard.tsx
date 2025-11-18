@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import FiltersBar from './modules/filters-bar';
 import Pagination from './modules/pagination';
 import { usePagination } from '@/hooks/use-pagination';
+import EmptyData from './modules/empty-data';
+import Loader from './modules/loader';
+import { EXPORTS_FILTERS_OPTIONS } from '@/config/exports-filters';
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -67,7 +70,7 @@ export function ExportDashboard() {
   }, [page, limit, filters]);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 w-full mx-auto">
       {/* @TODO : To translate with i18n */}
       <h1 className="text-3xl font-bold mb-6 text-gray-900">Tableau de Bord des Exports</h1>
 
@@ -78,48 +81,14 @@ export function ExportDashboard() {
             label: 'Passerelle',
             value: filters.gatewayCode,
             onChange: e => updateFilter('gatewayCode', e.target.value),
-            options: [
-              {
-                label: 'Toutes les passerelles',
-                value: '',
-              },
-              {
-                label: 'SeLoger',
-                value: 'seloger',
-              },
-              {
-                label: 'LeBonCoin',
-                value: 'leboncoin',
-              },
-            ],
+            options: EXPORTS_FILTERS_OPTIONS.gateway,
           },
           {
             name: 'status',
             label: 'Statut',
             value: filters.status,
             onChange: e => updateFilter('status', e.target.value),
-            options: [
-              {
-                label: 'Tous les statuts',
-                value: '',
-              },
-              {
-                label: 'En attente',
-                value: 'pending',
-              },
-              {
-                label: 'En cours',
-                value: 'in_progress',
-              },
-              {
-                label: 'Complété',
-                value: 'completed',
-              },
-              {
-                label: 'Échoué',
-                value: 'failed',
-              },
-            ],
+            options: EXPORTS_FILTERS_OPTIONS.status,
           },
           {
             name: 'property_id',
@@ -133,20 +102,7 @@ export function ExportDashboard() {
             label: 'Par page',
             value: limit,
             onChange: e => changeLimit(parseInt(e.target.value, 10)),
-            options: [
-              {
-                label: '10',
-                value: 10,
-              },
-              {
-                label: '20',
-                value: 20,
-              },
-              {
-                label: '50',
-                value: 50,
-              },
-            ],
+            options: EXPORTS_FILTERS_OPTIONS.limit,
           },
         ]}
       />
@@ -154,9 +110,7 @@ export function ExportDashboard() {
       {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md">{error}</div>}
 
       {isLoading && (
-        <div className="flex justify-center items-center h-64">
-          <div className="text-lg text-gray-600">Chargement des exports...</div>
-        </div>
+        <Loader />
       )}
 
       {!isLoading && data.length > 0 && (
@@ -204,9 +158,7 @@ export function ExportDashboard() {
       )}
 
       {!isLoading && data.length === 0 && !error && (
-        <div className="text-center py-12">
-          <p className="text-lg text-gray-600">Aucun export trouvé</p>
-        </div>
+        <EmptyData />
       )}
 
       <Pagination

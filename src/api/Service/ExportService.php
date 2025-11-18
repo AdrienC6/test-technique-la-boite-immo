@@ -18,8 +18,9 @@ class ExportService
         private ExporterRegistry $exporterRegistry,
         private EntityManagerInterface $entityManager,
         private GatewayRepository $gatewayRepository,
-        private ExportRepository $exportRepository
-    ) {}
+        private ExportRepository $exportRepository,
+    ) {
+    }
 
     public function exportPropertyToAllActiveGateways(Property $property): array
     {
@@ -38,7 +39,7 @@ class ExportService
     public function exportPropertyToGatewayByCode(Property $property, string $gatewayCode): Export
     {
         $gateway = $this->gatewayRepository->findOneBy(['code' => $gatewayCode]);
-        
+
         if (!$gateway) {
             throw new \InvalidArgumentException("Gateway not found: $gatewayCode");
         }
@@ -46,7 +47,7 @@ class ExportService
         return $this->exportPropertyToGateway($property, $gateway);
     }
 
-    public function getExports(Request $request) : PaginateAPIResult 
+    public function getExports(Request $request): PaginateAPIResult
     {
         $filters = [
             'gateway_code' => $request->query->get('gateway_code'),

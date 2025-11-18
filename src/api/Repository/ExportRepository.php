@@ -26,9 +26,11 @@ class ExportRepository extends ServiceEntityRepository
         if (!empty($filters['gateway_code'])) {
             $qb->andWhere('g.code = :gateway_code')->setParameter('gateway_code', $filters['gateway_code']);
         }
+
         if (!empty($filters['status'])) {
             $qb->andWhere('e.status = :status')->setParameter('status', $filters['status']);
         }
+
         if (!empty($filters['property_id'])) {
             $qb->andWhere('p.id = :property_id')->setParameter('property_id', $filters['property_id']);
         }
@@ -44,6 +46,6 @@ class ExportRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return [$results, (int) $total];
+        return [$results, (int)$total];
     }
 }

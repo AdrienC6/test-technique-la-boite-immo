@@ -13,11 +13,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class ExportController extends AbstractController
 {
     public function __construct(
-        private readonly ExportService $exportService
-    ){}
+        private readonly ExportService $exportService,
+    ) {
+    }
 
     #[Route('/property/{id}', name: 'create', methods: ['POST'])]
-    public function export(Property $property, Request $request): JsonResponse {
+    public function export(Property $property, Request $request): JsonResponse
+    {
         $data = json_decode($request->getContent(), true) ?? [];
         $gatewayCode = $data['gateway_code'] ?? null;
 
@@ -42,9 +44,11 @@ class ExportController extends AbstractController
     }
 
     #[Route(name: 'list', methods: ['GET'])]
-    public function list(Request $request): JsonResponse {
+    public function list(Request $request): JsonResponse
+    {
         try {
             $exports = $this->exportService->getExports($request);
+
             return $this->json($exports);
         } catch (\InvalidArgumentException $e) {
             return $this->json(['error' => $e->getMessage()], 400);

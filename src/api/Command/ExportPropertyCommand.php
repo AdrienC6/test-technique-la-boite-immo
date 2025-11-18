@@ -20,7 +20,7 @@ class ExportPropertyCommand extends Command
 {
     public function __construct(
         private ExportService $exportService,
-        private PropertyRepository $propertyRepository
+        private PropertyRepository $propertyRepository,
     ) {
         parent::__construct();
     }
@@ -45,6 +45,7 @@ class ExportPropertyCommand extends Command
 
         if (!$property) {
             $io->error("Property not found: $propertyId");
+
             return Command::FAILURE;
         }
 
@@ -56,18 +57,21 @@ class ExportPropertyCommand extends Command
                 $io->writeln("External ID: {$export->getExternalId()}");
             } elseif ($exportAll) {
                 $exports = $this->exportService->exportPropertyToAllActiveGateways($property);
-                $io->success("Property exported to " . count($exports) . " gateway(s)");
+                $io->success('Property exported to ' . count($exports) . ' gateway(s)');
+
                 foreach ($exports as $export) {
                     $io->writeln("  - {$export->getGateway()->getName()}: {$export->getStatus()->value}");
                 }
             } else {
-                $io->error("No gateway provided");
+                $io->error('No gateway provided');
+
                 return Command::FAILURE;
             }
 
             return Command::SUCCESS;
         } catch (\Exception $e) {
-            $io->error("Export failed: " . $e->getMessage());
+            $io->error('Export failed: ' . $e->getMessage());
+
             return Command::FAILURE;
         }
     }
