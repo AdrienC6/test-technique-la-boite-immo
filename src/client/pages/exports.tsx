@@ -1,7 +1,7 @@
+import { ExportDashboard } from '@/components/exports-dashboard';
+
 export function ExportsPage() {
-    return (
-        <div>
-            WIP
-        </div>
-    );
+  return (
+    <ExportDashboard />
+  );
 }

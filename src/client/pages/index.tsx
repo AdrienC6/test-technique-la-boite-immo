@@ -1,16 +1,3 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
-import { Separator } from '@/components/ui/separator';
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 import { z } from 'zod';
@@ -57,5 +44,5 @@ export function Index() {
       },
       () => <p>{t('Aucune donnée disponible')}</p>,
     )
-    .exhaustive()
+    .exhaustive();
 }
