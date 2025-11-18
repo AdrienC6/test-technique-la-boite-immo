@@ -16,28 +16,36 @@ class ExportRepository extends ServiceEntityRepository
         parent::__construct($registry, Export::class);
     }
 
-    //    /**
-    //     * @return Export[] Returns an array of Export objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findWithFilters(array $filters, int $page, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->leftJoin('e.property', 'p')
+            ->leftJoin('e.gateway', 'g')
+            ->orderBy('e.updatedAt', 'DESC');
 
-    //    public function findOneBySomeField($value): ?Export
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (!empty($filters['gateway_code'])) {
+            $qb->andWhere('g.code = :gateway_code')->setParameter('gateway_code', $filters['gateway_code']);
+        }
+
+        if (!empty($filters['status'])) {
+            $qb->andWhere('e.status = :status')->setParameter('status', $filters['status']);
+        }
+
+        if (!empty($filters['property_id'])) {
+            $qb->andWhere('p.id = :property_id')->setParameter('property_id', $filters['property_id']);
+        }
+
+        $totalQb = clone $qb;
+        $totalQb->select('COUNT(e.id)')
+                ->resetDQLPart('orderBy');
+
+        $total = $totalQb->getQuery()->getSingleScalarResult();
+        $results = $qb
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        return [$results, (int)$total];
+    }
 }

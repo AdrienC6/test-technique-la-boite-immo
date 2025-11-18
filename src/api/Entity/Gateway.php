@@ -164,4 +164,17 @@ class Gateway
     {
         $this->updatedAt = new \DateTimeImmutable();
     }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'code' => $this->getCode(),
+            'active' => $this->isActive(),
+            'config' => $this->getConfig(),
+            'createdAt' => $this->getCreatedAt()?->format(\DateTime::ATOM),
+            'updatedAt' => $this->getUpdatedAt()?->format(\DateTime::ATOM),
+        ];
+    }
 }

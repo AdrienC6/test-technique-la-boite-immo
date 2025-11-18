@@ -8,10 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Property
+class Property implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -275,5 +276,25 @@ class Property
     public function onPreUpdate(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'price' => $this->getPrice(),
+            'address' => $this->getAddress(),
+            'city' => $this->getCity(),
+            'zipCode' => $this->getZipCode(),
+            'country' => $this->getCountry(),
+            'surface' => $this->getSurface(),
+            'numberOfRooms' => $this->getNumberOfRooms(),
+            'propertyType' => $this->getPropertyType()?->value,
+            'isPublished' => $this->isPublished(),
+            'createdAt' => $this->getCreatedAt()?->format(\DateTime::ATOM),
+            'updatedAt' => $this->getUpdatedAt()?->format(\DateTime::ATOM),
+        ];
     }
 }

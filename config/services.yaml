@@ -19,6 +19,7 @@ services:
             - "../src/api/DependencyInjection/"
             - "../src/api/Entity/"
             - "../src/api/Kernel.php"
+            - "../src/api/DTO"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -27,3 +28,8 @@ services:
         arguments:
             $env: "%env(APP_ENV)%"
             $manifest: "%kernel.project_dir%/public/assets/manifest.json"
+
+    App\Service\Exporter\ExporterRegistry:
+        calls:
+            - register: ['@App\Service\Exporter\SeLogerExporter']
+            - register: ['@App\Service\Exporter\LeBonCoinExporter']

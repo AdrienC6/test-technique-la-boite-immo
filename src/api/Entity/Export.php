@@ -5,10 +5,11 @@ namespace App\Entity;
 use App\Enum\ExportStatus;
 use App\Repository\ExportRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: ExportRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Export
+class Export implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -138,5 +139,19 @@ class Export
     public function onPreUpdate(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'property' => $this->getProperty(),
+            'gateway' => $this->getGateway(),
+            'status' => $this->getStatus()?->value,
+            'externalId' => $this->getExternalId(),
+            'response' => $this->getResponse(),
+            'createdAt' => $this->getCreatedAt()?->format(\DateTime::ATOM),
+            'updatedAt' => $this->getUpdatedAt()?->format(\DateTime::ATOM),
+        ];
     }
 }
